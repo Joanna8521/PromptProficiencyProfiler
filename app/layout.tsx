@@ -1,22 +1,14 @@
-import './globals.css';
 import { Inter } from 'next/font/google';
-import { ReactNode } from 'react';
+import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const inter = Inter({ subsets: ['latin'] });
 
-export const metadata = {
-  title: 'Prompt Proficiency Profiler',
-  description: '語氣層級測驗 × 模組建構平台'
-};
+export const metadata = { ... };
 
-export default function RootLayout({
-  children
-}: {
-  children: ReactNode;
-}) {
+export default function RootLayout({ children }) {
   return (
-    <html lang="zh-Hant" className="dark">
-      <body className={`bg-black text-white ${inter.className} antialiased`}>{children}</body>
+    <html lang="zh-Hant" className="bg-black text-white">
+      <body className={`${inter.className} bg-black text-white`}>{children}</body>
     </html>
   );
 }
