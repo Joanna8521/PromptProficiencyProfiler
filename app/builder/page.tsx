@@ -1,7 +1,7 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -12,74 +12,96 @@ const fadeUp = {
   })
 };
 
-const modules = [
-  {
-    id: 'beginner',
-    title: 'Prompt 格式模板工具箱',
-    description: '適合剛入門的使用者，快速建立「有明確格式」的語言輸入習慣。',
-    example: '請用條列方式整理以下內容，並加上 emoji。'
-  },
-  {
-    id: 'styling',
-    title: '語氣風格轉換練習集',
-    description: '訓練你根據不同角色語感與場景進行轉譯與語速調整。',
-    example: '請用 podcast 主持人口吻，講解這段資訊，語氣溫暖但不誇張。'
-  },
-  {
-    id: 'persona-builder',
-    title: '語言人格建構器',
-    description: '讓你定義自己的語氣模組，並建立模組語法與角色格式。',
-    example: '我的語氣模組：溫柔、邏輯清晰、有節奏感。請用此語氣幫我重寫以下文字...'
-  },
-  {
-    id: 'meta-deck',
-    title: '語言模組駕駛艙工具組',
-    description: '支援語氣切換、drift 偵測、角色維穩等高階控制工具。',
-    example: '請在回應前檢查語氣是否偏移，若偏移請重新生成。保持模組人格：「冷靜犀利、推理導向」。'
-  },
-  {
-    id: 'framework',
-    title: '語氣宇宙 × 系統設計地圖',
-    description: '將你的語言模組系統化，包含 API 設計、分類邏輯與人格節點拓展。',
-    example: '我想建立五種語氣角色人格，每一種有三種場景模組。請協助產出分類與語法命名。'
-  }
-];
+export default function BuilderPage() {
+  const [persona, setPersona] = useState('');
+  const [traits, setTraits] = useState('');
+  const [styleNotes, setStyleNotes] = useState('');
+  const [example, setExample] = useState('');
+  const [output, setOutput] = useState('');
+  const [copied, setCopied] = useState(false);
 
-export default function LibraryPage() {
+  const handleGenerate = () => {
+    const result = `請使用以下語言模組進行回應：\n\n模組名稱：${persona}\n語氣特質：${traits}\n風格備註：${styleNotes}\n\n請用以上語氣幫我重寫以下內容：\n${example}`;
+    setOutput(result);
+    setCopied(false);
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <motion.div
-      className="max-w-4xl mx-auto py-12 px-6"
-      initial="hidden"
-      animate="show"
-      variants={fadeUp}
-    >
-      <motion.h1 className="text-3xl font-bold mb-10 text-center" variants={fadeUp}>
-        語言模組推薦庫
+    <motion.div className="max-w-3xl mx-auto py-12 px-6" initial="hidden" animate="show" variants={fadeUp}>
+      <motion.h1 className="text-3xl font-bold mb-6 text-center" variants={fadeUp}>
+        🛠 語氣模組建構器
       </motion.h1>
-      <motion.div
-        className="grid md:grid-cols-2 gap-6"
-        variants={fadeUp}
-      >
-        {modules.map((mod, idx) => {
-          const isLink = mod.id === 'persona-builder';
-          const CardContent = (
-            <motion.div
-              className="border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition h-full"
-              custom={idx + 1}
-              variants={fadeUp}
-            >
-              <h2 className="text-xl font-semibold mb-2">{mod.title}</h2>
-              <p className="text-gray-600 mb-2">{mod.description}</p>
-              <p className="text-sm text-gray-800 italic">範例語句：{mod.example}</p>
-            </motion.div>
-          );
 
-          return isLink ? (
-            <Link href="/builder" key={mod.id} className="h-full">{CardContent}</Link>
-          ) : (
-            <div key={mod.id}>{CardContent}</div>
-          );
-        })}
+      <motion.div className="space-y-6" variants={fadeUp}>
+        <div>
+          <label className="block font-medium mb-1">模組名稱</label>
+          <input
+            type="text"
+            className="w-full border rounded-md p-2"
+            placeholder="如：溫柔理性型講師"
+            value={persona}
+            onChange={(e) => setPersona(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium mb-1">語氣特質</label>
+          <input
+            type="text"
+            className="w-full border rounded-md p-2"
+            placeholder="如：溫柔、條理清楚、有耐心"
+            value={traits}
+            onChange={(e) => setTraits(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium mb-1">風格備註（語速、視角、節奏等）</label>
+          <input
+            type="text"
+            className="w-full border rounded-md p-2"
+            placeholder="如：節奏慢、有空白感、不強迫"
+            value={styleNotes}
+            onChange={(e) => setStyleNotes(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium mb-1">範例內容</label>
+          <textarea
+            className="w-full border rounded-md p-2"
+            rows={4}
+            placeholder="請貼上你想要重寫的文字"
+            value={example}
+            onChange={(e) => setExample(e.target.value)}
+          />
+        </div>
+
+        <button
+          className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800"
+          onClick={handleGenerate}
+        >
+          生成模組語氣 Prompt
+        </button>
+
+        {output && (
+          <div className="bg-gray-50 border p-4 mt-6 rounded-md whitespace-pre-wrap">
+            <p className="text-sm text-gray-500 mb-2">📎 生成語句：</p>
+            <p className="mb-4">{output}</p>
+            <button
+              onClick={handleCopy}
+              className="px-4 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              {copied ? '✅ 已複製！' : '📋 複製語句'}
+            </button>
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );
