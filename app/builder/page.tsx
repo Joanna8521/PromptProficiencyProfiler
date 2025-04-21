@@ -19,17 +19,34 @@ export default function BuilderPage() {
   const [example, setExample] = useState('');
   const [output, setOutput] = useState('');
   const [copied, setCopied] = useState(false);
+  const [exported, setExported] = useState(false);
 
   const handleGenerate = () => {
     const result = `請使用以下語言模組進行回應：\n\n模組名稱：${persona}\n語氣特質：${traits}\n風格備註：${styleNotes}\n\n請用以上語氣幫我重寫以下內容：\n${example}`;
     setOutput(result);
     setCopied(false);
+    setExported(false);
   };
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(output);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleExport = () => {
+    const blob = new Blob([
+      JSON.stringify({ persona, traits, styleNotes, example }, null, 2)
+    ], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${persona || 'my-language-module'}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setExported(true);
+    setTimeout(() => setExported(false), 2000);
   };
 
   return (
@@ -94,12 +111,20 @@ export default function BuilderPage() {
           <div className="bg-gray-50 border p-4 mt-6 rounded-md whitespace-pre-wrap">
             <p className="text-sm text-gray-500 mb-2">📎 生成語句：</p>
             <p className="mb-4">{output}</p>
-            <button
-              onClick={handleCopy}
-              className="px-4 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              {copied ? '✅ 已複製！' : '📋 複製語句'}
-            </button>
+            <div className="flex gap-4">
+              <button
+                onClick={handleCopy}
+                className="px-4 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                {copied ? '✅ 已複製！' : '📋 複製語句'}
+              </button>
+              <button
+                onClick={handleExport}
+                className="px-4 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700"
+              >
+                {exported ? '✅ 已匯出！' : '🧾 匯出 JSON'}
+              </button>
+            </div>
           </div>
         )}
       </motion.div>
