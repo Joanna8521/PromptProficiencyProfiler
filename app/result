@@ -1,1 +1,67 @@
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+
+const levels = {
+  L1: {
+    title: 'L1｜直覺輸入者',
+    description:
+      '你使用 ChatGPT 的方式偏向直覺式輸入，想到什麼就打什麼，較少考慮輸出格式與語言風格設計。這沒關係，因為這正是探索期最自然的樣子。',
+    suggestion:
+      '你可以從學習「明確提問」與「格式化輸出」開始，例如：學會要求條列、背景說明等。',
+    cta: '→ 前往語言基礎訓練區'
+  },
+  L2: {
+    title: 'L2｜結構使用者',
+    description:
+      '你已經知道如何給 GPT 指令，也會要求格式或具體條件，是很典型的任務導向使用者。',
+    suggestion:
+      '你可以進一步嘗試控制語言風格與語氣模擬，提升對「語境」的操控。',
+    cta: '→ 開始語言風格實驗室'
+  },
+  L3: {
+    title: 'L3｜語言導演',
+    description:
+      '你是語感敏銳的創作者，會要求 GPT 呈現某種說話方式、節奏、甚至模仿語氣。你已經開始建立語言調控的直覺與偏好。',
+    suggestion:
+      '你可以試著建立語言模組，開始探索語氣模擬角色、視角切換與風格控管。',
+    cta: '→ 建立你的語言人格卡'
+  },
+  L4: {
+    title: 'L4｜Meta駕駛者',
+    description:
+      '你已進入語言模組駕馭層級，會使用語法、定義語氣人格，甚至進行 drift 偵測與維穩。你不只是使用者，而是語言調控者。',
+    suggestion:
+      '你可以設計語氣 API、角色切換協議與模組組合策略，打造你的語言作業系統。',
+    cta: '→ 進入語言模組駕駛艙'
+  },
+  L5: {
+    title: 'L5｜語言架構師',
+    description:
+      '你已具備語言系統設計思維，不只是模組操控，而是設計整個語氣宇宙邏輯、角色分類、協議語法的人。',
+    suggestion:
+      '你可以開始打造 Prompt API 工廠、角色人格平台與語氣宇宙編排邏輯。',
+    cta: '→ 啟動你的語氣宇宙架構工程'
+  }
+};
+
+export default function ResultPage() {
+  const params = useSearchParams();
+  const level = params.get('level') || 'L1';
+  const profile = levels[level] || levels['L1'];
+
+  return (
+    <div className="max-w-2xl mx-auto py-10 px-6 text-center">
+      <h1 className="text-3xl font-bold mb-4">你的語言階層診斷結果</h1>
+      <div className="bg-white shadow-md rounded-lg p-6 text-left">
+        <h2 className="text-xl font-semibold mb-2">{profile.title}</h2>
+        <p className="mb-4 text-gray-700">{profile.description}</p>
+        <p className="mb-4 text-gray-900 font-medium">💡 {profile.suggestion}</p>
+        <button className="mt-4 px-5 py-2 bg-black text-white rounded-md hover:bg-gray-800">
+          {profile.cta}
+        </button>
+      </div>
+    </div>
+  );
+}
 
