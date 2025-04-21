@@ -24,19 +24,27 @@ const fadeUp = {
 
 export default function Home() {
   return (
-    <motion.div className="min-h-screen bg-black text-white max-w-2xl mx-auto py-16 px-6 text-center space-y-10" initial="hidden" animate="show" variants={fadeUp}>
-      <motion.h1 className="text-4xl font-bold" variants={fadeUp}>
+    <motion.div
+      className="min-h-screen bg-black text-white max-w-2xl mx-auto py-16 px-6 text-center space-y-10"
+      initial="hidden"
+      animate="show"
+      variants={fadeUp}
+    >
+      <motion.h1
+        className="text-4xl font-extrabold tracking-tight sm:text-5xl"
+        variants={fadeUp}
+      >
         Prompt Proficiency Profiler
       </motion.h1>
-      <motion.p className="text-gray-300" variants={fadeUp}>
-        一站式語言使用者測驗 × 語氣模組系統平台
+      <motion.p className="text-gray-400 text-lg sm:text-xl" variants={fadeUp}>
+        測出你在 ChatGPT 的語氣使用層級，打造專屬語言模組！
       </motion.p>
       <motion.div className="grid gap-4" variants={fadeUp}>
         {links.map((link, i) => (
           <motion.div key={link.href} custom={i + 1} variants={fadeUp}>
             <Link
               href={link.href}
-              className="block w-full bg-white text-black py-3 rounded hover:bg-gray-200 transition"
+              className="block w-full bg-white text-black py-3 px-6 rounded-lg font-medium hover:bg-gray-200 transition text-lg"
             >
               {link.label}
             </Link>
