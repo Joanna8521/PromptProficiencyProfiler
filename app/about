@@ -1,46 +1,63 @@
 'use client';
 
+import { motion } from 'framer-motion';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.1 * i, duration: 0.6 }
+  })
+};
+
 export default function AboutPage() {
   return (
-    <div className="max-w-3xl mx-auto py-12 px-6 prose prose-neutral">
-      <h1>關於 PPP（Prompt Proficiency Profiler）</h1>
+    <motion.div
+      className="max-w-3xl mx-auto py-12 px-6 prose prose-neutral"
+      initial="hidden"
+      animate="show"
+      variants={fadeUp}
+    >
+      <motion.h1 variants={fadeUp}>關於 PPP（Prompt Proficiency Profiler）</motion.h1>
 
-      <p>
-        PPP 是一套專為 ChatGPT 與 AI 語言使用者設計的階層診斷系統。它的目的不只是分類使用者，而是幫助你看見：
-        你與語言模型之間的「互動品質」，是否還有升級空間。
-      </p>
+      <motion.p variants={fadeUp}>
+        PPP 是一套專為 ChatGPT 與 AI 語言使用者設計的階層診斷系統。它的目的不只是分類使用者，而是幫助你看見：你與語言模型之間的「互動品質」，是否還有升級空間。
+      </motion.p>
 
-      <h2>為什麼我們設計這個測驗？</h2>
-      <ul>
+      <motion.h2 variants={fadeUp}>為什麼我們設計這個測驗？</motion.h2>
+      <motion.ul variants={fadeUp}>
         <li>讓使用者知道自己目前的語言使用階段</li>
         <li>辨識模組建構與語氣操控的潛能</li>
         <li>提供階層對應的語言訓練模組與升級建議</li>
-      </ul>
+      </motion.ul>
 
-      <h2>我們如何分類？</h2>
-      <p>
-        PPP 依照你與模型互動的「語言行為」，將使用者劃分為 L1～L5：
-        從直覺輸入者 → 結構使用者 → 語氣導演 → Meta駕駛者 → 語言架構師。
-      </p>
+      <motion.h2 variants={fadeUp}>我們如何分類？</motion.h2>
+      <motion.p variants={fadeUp}>
+        PPP 依照你與模型互動的「語言行為」，將使用者劃分為 L1～L5：從直覺輸入者 → 結構使用者 → 語氣導演 → Meta駕駛者 → 語言架構師。
+      </motion.p>
 
-      <h2>常見 FAQ</h2>
-      <p><strong>Q：我覺得我卡在 L2 跟 L3 中間，怎麼辦？</strong><br/>
-      A：沒關係，這代表你正處在成長的轉換區段，我們建議你直接挑戰 L3 模組試試看。</p>
+      <motion.h2 variants={fadeUp}>常見 FAQ</motion.h2>
+      <motion.p variants={fadeUp}>
+        <strong>Q：我覺得我卡在 L2 跟 L3 中間，怎麼辦？</strong><br />
+        A：沒關係，這代表你正處在成長的轉換區段，我們建議你直接挑戰 L3 模組試試看。
+      </motion.p>
+      <motion.p variants={fadeUp}>
+        <strong>Q：這個測驗有標準答案嗎？</strong><br />
+        A：沒有，每一題都是根據「你過去的真實行為」來分類，不是對錯，而是定位。
+      </motion.p>
+      <motion.p variants={fadeUp}>
+        <strong>Q：我可以多次測驗嗎？</strong><br />
+        A：當然可以，而且你會發現隨著練習，你的語言階層也會逐步升級。
+      </motion.p>
 
-      <p><strong>Q：這個測驗有標準答案嗎？</strong><br/>
-      A：沒有，每一題都是根據「你過去的真實行為」來分類，不是對錯，而是定位。</p>
-
-      <p><strong>Q：我可以多次測驗嗎？</strong><br/>
-      A：當然可以，而且你會發現隨著練習，你的語言階層也會逐步升級。</p>
-
-      <h2>關於作者</h2>
-      <p>
+      <motion.h2 variants={fadeUp}>關於作者</motion.h2>
+      <motion.p variants={fadeUp}>
         本專案由 Joan Wang 發想與設計，旨在幫助創作者與 AI 使用者更有效地模組化語氣與內容輸出。
-      </p>
-
-      <p>
+      </motion.p>
+      <motion.p variants={fadeUp}>
         如果你有語氣模組設計、分類邏輯、prompt 架構等相關想法，也歡迎提出 PR 或私訊共創合作！
-      </p>
-    </div>
+      </motion.p>
+    </motion.div>
   );
 }
