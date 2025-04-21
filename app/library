@@ -1,5 +1,16 @@
 'use client';
 
+import { motion } from 'framer-motion';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.1 * i, duration: 0.6 }
+  })
+};
+
 const modules = [
   {
     id: 'beginner',
@@ -23,8 +34,7 @@ const modules = [
     id: 'meta-deck',
     title: '語言模組駕駛艙工具組',
     description: '支援語氣切換、drift 偵測、角色維穩等高階控制工具。',
-    example: '請在回應前檢查語氣是否偏移，若偏移請重新生成。
-保持模組人格：「冷靜犀利、推理導向」。'
+    example: '請在回應前檢查語氣是否偏移，若偏移請重新生成。保持模組人格：「冷靜犀利、推理導向」。'
   },
   {
     id: 'framework',
@@ -36,20 +46,32 @@ const modules = [
 
 export default function LibraryPage() {
   return (
-    <div className="max-w-4xl mx-auto py-12 px-6">
-      <h1 className="text-3xl font-bold mb-10 text-center">語言模組推薦庫</h1>
-      <div className="grid md:grid-cols-2 gap-6">
-        {modules.map((mod) => (
-          <div
+    <motion.div
+      className="max-w-4xl mx-auto py-12 px-6"
+      initial="hidden"
+      animate="show"
+      variants={fadeUp}
+    >
+      <motion.h1 className="text-3xl font-bold mb-10 text-center" variants={fadeUp}>
+        語言模組推薦庫
+      </motion.h1>
+      <motion.div
+        className="grid md:grid-cols-2 gap-6"
+        variants={fadeUp}
+      >
+        {modules.map((mod, idx) => (
+          <motion.div
             key={mod.id}
             className="border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition"
+            custom={idx + 1}
+            variants={fadeUp}
           >
             <h2 className="text-xl font-semibold mb-2">{mod.title}</h2>
             <p className="text-gray-600 mb-2">{mod.description}</p>
             <p className="text-sm text-gray-800 italic">範例語句：{mod.example}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
