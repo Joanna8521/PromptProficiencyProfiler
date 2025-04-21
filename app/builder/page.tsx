@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 const fadeUp = {
@@ -12,7 +13,8 @@ const fadeUp = {
   })
 };
 
-export default function BuilderFormV1() {
+export default function BuilderFormV2() {
+  const router = useRouter();
   const [form, setForm] = useState({
     persona: '',
     description: '',
@@ -33,10 +35,15 @@ export default function BuilderFormV1() {
 
   const preview = `請使用以下語言模組進行回應：\n\n模組名稱：${form.persona}\n角色描述：${form.description}\n適用場景：${form.useCases}\n語氣特質：${form.traits}\n視角：${form.pov}｜語速：${form.pace}｜情緒語感：${form.emotionStyle}｜節奏：${form.rhythm}\n\n${form.openingLine}\n格式提示：${form.outputFormatHint}\n\n請用以上語氣重寫以下內容：\n${form.testInput}`;
 
+  const sendToSandbox = () => {
+    localStorage.setItem('ppp-builder-latest', JSON.stringify(form));
+    router.push('/sandbox');
+  };
+
   return (
     <motion.div className="max-w-3xl mx-auto py-12 px-6 space-y-8" initial="hidden" animate="show" variants={fadeUp}>
       <motion.h1 className="text-3xl font-bold text-center" variants={fadeUp}>
-        🧠 模組人格建構器（V1）
+        🧠 模組人格建構器（V2）
       </motion.h1>
 
       {/* 基本區塊 */}
@@ -69,10 +76,19 @@ export default function BuilderFormV1() {
         <textarea placeholder="測試文字內容..." value={form.testInput} onChange={e => handleChange('testInput', e.target.value)} rows={4} className="border p-2 rounded w-full" />
       </section>
 
-      {/* 預覽輸出區 */}
-      <section className="mt-8 border p-4 rounded bg-gray-50">
-        <h3 className="text-sm text-gray-500 mb-2">📎 生成語句預覽：</h3>
-        <pre className="whitespace-pre-wrap text-sm">{preview}</pre>
+      {/* 預覽與送出 */}
+      <section className="mt-8 space-y-4">
+        <div className="border p-4 rounded bg-gray-50">
+          <h3 className="text-sm text-gray-500 mb-2">📎 生成語句預覽：</h3>
+          <pre className="whitespace-pre-wrap text-sm">{preview}</pre>
+        </div>
+
+        <button
+          className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
+          onClick={sendToSandbox}
+        >
+          送出此模組到 Sandbox 測試 ➤
+        </button>
       </section>
     </motion.div>
   );
