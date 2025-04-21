@@ -15,7 +15,105 @@ const questions = [
       { label: '除了 ChatGPT 之外，我沒有朋友', score: 'L1' }
     ]
   },
-  // 可持續擴充更多題目...
+  {
+    id: 2,
+    text: '你是否曾說過：「這句話太硬了，幫我轉成 podcast 語氣」？',
+    options: [
+      { label: '沒說過，我都是照它講的看', score: 'L1' },
+      { label: '偶爾會覺得太兇，但不太會改', score: 'L2' },
+      { label: '常常這樣修改語言風格並加註語境', score: 'L3' },
+      { label: '我會建立固定語言模組並凍結它', score: 'L4' },
+      { label: '這是什麼？看不懂。', score: 'L1' }
+    ]
+  },
+  {
+    id: 3,
+    text: '你輸入 prompt 時會注意什麼？',
+    options: [
+      { label: '想到什麼就打什麼', score: 'L1' },
+      { label: '通常會補充格式或要求條列', score: 'L2' },
+      { label: '我會標註語言風格、受眾與目標表達方式', score: 'L3' },
+      { label: '我用語言模組語法建立完整語句規則', score: 'L4' },
+      { label: '視角是什麼意思？', score: 'L1' }
+    ]
+  },
+  {
+    id: 4,
+    text: '你是否曾這樣下過指令：「用像 podcast 主持人＋老師又不說教的語氣來回應」？',
+    options: [
+      { label: '從沒這樣說過', score: 'L1' },
+      { label: '有時會說“不要太嚴肅”，但語言描述不明確', score: 'L2' },
+      { label: '常用比喻型語言設定', score: 'L3' },
+      { label: '用語速＋視角＋節奏構成語言人格', score: 'L4' },
+      { label: '蛤？可以這樣要求喔？', score: 'L1' }
+    ]
+  },
+  {
+    id: 5,
+    text: '你對回應結果的處理方式是？',
+    options: [
+      { label: '看得懂就好，不太改', score: 'L1' },
+      { label: '如果不對，我會重問或補充條件', score: 'L2' },
+      { label: '我會改 prompt 結構與語言風格來優化', score: 'L3' },
+      { label: '我會進行 drift 檢測與格式重編', score: 'L4' },
+      { label: '第一次聽到可以設計自己的語言模組', score: 'L1' }
+    ]
+  },
+  {
+    id: 6,
+    text: '你是否曾經設計過自己的語言模組？',
+    options: [
+      { label: '沒做過，也不知道怎麼開始', score: 'L1' },
+      { label: '有寫過語言風格說明，但還不算模組', score: 'L2' },
+      { label: '有寫過模組語法，能重複套用', score: 'L3' },
+      { label: '有一整套模組庫＋語言人格切換指令', score: 'L4' },
+      { label: '看完就走，為什麼要回應？', score: 'L1' }
+    ]
+  },
+  {
+    id: 7,
+    text: '你是否曾經要求 ChatGPT 比較語氣？',
+    options: [
+      { label: '沒這樣做過', score: 'L1' },
+      { label: '會對兩段輸出有感覺，但不會具體化', score: 'L2' },
+      { label: '我會說「版本B比較暖，版本C太硬」這類評論', score: 'L3' },
+      { label: '我要求它評分語言張力、節奏與 punch 率', score: 'L4' },
+      { label: '不用改', score: 'L1' }
+    ]
+  },
+  {
+    id: 8,
+    text: '你是否會模擬不同讀者的視角？',
+    options: [
+      { label: '沒想過這種用法', score: 'L1' },
+      { label: '偶爾會說“這樣會不會太難懂”', score: 'L2' },
+      { label: '我會指定「請模擬一個共感型讀者」的反應', score: 'L3' },
+      { label: '我會讓 GPT 模擬初學者、酸民、對立者的回饋', score: 'L4' },
+      { label: '抄別人的就好，這樣比較快', score: 'L1' }
+    ]
+  },
+  {
+    id: 9,
+    text: '你是否曾說過：「這個語氣偏移了，請回到我設定的模組」？',
+    options: [
+      { label: '沒說過', score: 'L1' },
+      { label: '有發現過不一致，但不會明確指出', score: 'L2' },
+      { label: '曾提醒模型語言風格跑掉，請重來', score: 'L3' },
+      { label: '常做 drift 檢測與語言風格重啟', score: 'L4' },
+      { label: '我分辨不出哪句話太硬或太軟', score: 'L1' }
+    ]
+  },
+  {
+    id: 10,
+    text: '你是否幫別人做過 prompt 設計或語言優化？',
+    options: [
+      { label: '沒幫過別人這方面', score: 'L1' },
+      { label: '有幫朋友改過 prompt 結構', score: 'L2' },
+      { label: '幫別人重新寫語言句型與輸出結構', score: 'L3' },
+      { label: '幫他們建立語言模組 + 提供範例用法', score: 'L4' },
+      { label: '用來做 LINE 貼圖或是吉卜力風格圖', score: 'L1' }
+    ]
+  }
 ];
 
 export default function TestPage() {
@@ -69,4 +167,3 @@ export default function TestPage() {
     </div>
   );
 }
-
