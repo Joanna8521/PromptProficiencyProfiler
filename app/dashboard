@@ -1,0 +1,58 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+const mockHistory = [
+  { date: '2024-05-01', level: 'L1' },
+  { date: '2024-05-03', level: 'L2' },
+  { date: '2024-05-07', level: 'L3' },
+  { date: '2024-05-12', level: 'L3' },
+  { date: '2024-05-15', level: 'L4' }
+];
+
+const levelLabelMap: Record<string, string> = {
+  L1: '直覺輸入者',
+  L2: '結構使用者',
+  L3: '語言導演',
+  L4: 'Meta駕駛者',
+  L5: '語言架構師'
+};
+
+const levelColor: Record<string, string> = {
+  L1: 'bg-gray-400',
+  L2: 'bg-blue-400',
+  L3: 'bg-green-500',
+  L4: 'bg-yellow-500',
+  L5: 'bg-purple-600'
+};
+
+export default function DashboardPage() {
+  const [history, setHistory] = useState(mockHistory);
+
+  useEffect(() => {
+    // 假設未來可改為 fetch 使用者歷史紀錄
+    // setHistory(fetchFromLocalStorageOrServer())
+  }, []);
+
+  return (
+    <div className="max-w-4xl mx-auto px-6 py-10">
+      <h1 className="text-3xl font-bold mb-6 text-center">你的語言成長儀表板</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+        {history.map((entry, idx) => (
+          <div
+            key={idx}
+            className={`rounded-lg p-4 text-white ${levelColor[entry.level]}`}
+          >
+            <p className="text-sm mb-1">{entry.date}</p>
+            <p className="text-lg font-semibold">{entry.level}｜{levelLabelMap[entry.level]}</p>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-center text-gray-500 text-sm">
+        📊 此為模擬數據，未來將支援登入與自動紀錄測驗結果。
+      </p>
+    </div>
+  );
+}
