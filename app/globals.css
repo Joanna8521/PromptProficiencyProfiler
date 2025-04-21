@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  @apply bg-black text-white font-sans;
+}
+
 /* === PPP 語氣主題樣式 === */
 
 body {
