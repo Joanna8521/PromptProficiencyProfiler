@@ -1,6 +1,16 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.1 * i, duration: 0.6 }
+  })
+};
 
 const levels = {
   L1: {
@@ -51,17 +61,26 @@ export default function ResultPage() {
   const profile = levels[level] || levels['L1'];
 
   return (
-    <div className="max-w-2xl mx-auto py-10 px-6 text-center">
-      <h1 className="text-3xl font-bold mb-4">你的語言階層診斷結果</h1>
-      <div className="bg-white shadow-md rounded-lg p-6 text-left">
+    <motion.div
+      className="max-w-2xl mx-auto py-10 px-6 text-center"
+      initial="hidden"
+      animate="show"
+      variants={fadeUp}
+    >
+      <motion.h1 className="text-3xl font-bold mb-4" variants={fadeUp}>
+        你的語言階層診斷結果
+      </motion.h1>
+      <motion.div
+        className="bg-white shadow-md rounded-lg p-6 text-left"
+        variants={fadeUp}
+      >
         <h2 className="text-xl font-semibold mb-2">{profile.title}</h2>
         <p className="mb-4 text-gray-700">{profile.description}</p>
         <p className="mb-4 text-gray-900 font-medium">💡 {profile.suggestion}</p>
         <button className="mt-4 px-5 py-2 bg-black text-white rounded-md hover:bg-gray-800">
           {profile.cta}
         </button>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
-
