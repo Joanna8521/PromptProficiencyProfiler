@@ -1,68 +1,78 @@
 'use client';
 
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
 
-export default function HomePage() {
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.1 * i, duration: 0.6 }
+  })
+};
+
+export default function SandboxPage() {
+  const searchParams = useSearchParams();
+  const [inputText, setInputText] = useState('');
+  const [outputText, setOutputText] = useState('');
+  const [module, setModule] = useState<any>(null);
+
+  useEffect(() => {
+    // 嘗試從 localStorage 取得模組
+    const raw = localStorage.getItem('ppp-builder-latest');
+    if (raw) setModule(JSON.parse(raw));
+  }, []);
+
+  const handleGenerate = () => {
+    if (!module || !inputText) return;
+    const prompt = `請使用以下語言模組進行回應：\n\n模組名稱：${module.persona}\n角色描述：${module.description}\n適用場景：${module.useCases}\n語氣特質：${module.traits}\n視角：${module.pov}｜語速：${module.pace}｜情緒語感：${module.emotionStyle}｜節奏：${module.rhythm}\n\n${module.openingLine}\n格式提示：${module.outputFormatHint}\n\n請用以上語氣重寫以下內容：\n${inputText}`;
+
+    // 目前先假設產生輸出語句（未串 GPT）
+    setOutputText(`🧪 [模擬輸出]\n\n${prompt}`);
+  };
+
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center px-6 text-center bg-gradient-to-b from-white to-slate-100">
-      <div className="max-w-2xl py-20">
-        <h1 className="text-4xl font-bold mb-4">Prompt Proficiency Profiler</h1>
-        <p className="text-lg text-gray-600 mb-6">
-          測驗你與 ChatGPT 的語言互動成熟度，從直覺輸入者一路升級到語氣架構師！
-        </p>
-        <Link
-          href="/test"
-          className="inline-block bg-black text-white px-6 py-3 rounded-md text-lg hover:bg-gray-800"
-        >
-          立即開始測驗 →
-        </Link>
-      </div>
+    <motion.div className="max-w-3xl mx-auto py-12 px-6 space-y-6" initial="hidden" animate="show" variants={fadeUp}>
+      <motion.h1 className="text-3xl font-bold text-center mb-4" variants={fadeUp}>
+        🔬 模組語氣測試區（Sandbox）
+      </motion.h1>
 
-      <section className="max-w-4xl w-full py-16">
-        <h2 className="text-2xl font-bold mb-6">語言層級一覽</h2>
-        <div className="grid md:grid-cols-5 gap-4 text-sm text-left">
-          {[
-            ['L1', '直覺輸入者'],
-            ['L2', '結構使用者'],
-            ['L3', '語言導演'],
-            ['L4', 'Meta駕駛者'],
-            ['L5', '語言架構師']
-          ].map(([level, title]) => (
-            <div key={level} className="bg-white shadow rounded-lg p-4">
-              <h3 className="font-semibold mb-1">{level}</h3>
-              <p className="text-gray-700 text-sm">{title}</p>
+      {!module ? (
+        <p className="text-center text-gray-500">⚠️ 尚未載入模組，請從 /builder 建立模組後再來。</p>
+      ) : (
+        <>
+          <div className="bg-gray-100 p-4 rounded border">
+            <p className="text-sm text-gray-500 mb-2">📋 使用模組：</p>
+            <p className="text-base font-medium">{module.persona}（{module.description}）</p>
+          </div>
+
+          <div className="space-y-3">
+            <label className="block font-medium">請輸入你要模擬的語句</label>
+            <textarea
+              className="w-full border rounded p-2"
+              rows={4}
+              placeholder="例如：請幫我解釋這段文字..."
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+            />
+            <button
+              onClick={handleGenerate}
+              className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+            >
+              生成語氣語句
+            </button>
+          </div>
+
+          {outputText && (
+            <div className="bg-white border p-4 rounded mt-6 whitespace-pre-wrap">
+              <p className="text-sm text-gray-500 mb-2">🔧 模擬結果</p>
+              <pre>{outputText}</pre>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="max-w-4xl w-full py-12">
-        <h2 className="text-xl font-bold mb-4">功能導覽</h2>
-        <div className="grid sm:grid-cols-2 gap-4">
-          <Link href="/test" className="block bg-white border p-4 rounded-md shadow hover:shadow-md">
-            🧠 語言階層測驗
-            <p className="text-sm text-gray-600">10 題診斷你的語氣操控力</p>
-          </Link>
-          <Link href="/result?level=L3" className="block bg-white border p-4 rounded-md shadow hover:shadow-md">
-            📊 結果卡預覽
-            <p className="text-sm text-gray-600">看看每個階層如何呈現</p>
-          </Link>
-          <Link href="/library" className="block bg-white border p-4 rounded-md shadow hover:shadow-md">
-            🛠 語言模組推薦庫
-            <p className="text-sm text-gray-600">每階層對應的語言工具集</p>
-          </Link>
-          <Link href="/dashboard" className="block bg-white border p-4 rounded-md shadow hover:shadow-md">
-            🪄 成長儀表板
-            <p className="text-sm text-gray-600">曲線圖 × 歷程追蹤</p>
-          </Link>
-        </div>
-      </section>
-
-      <footer className="py-12 text-sm text-gray-400 text-center">
-        作者：Joan Wang ｜ 內容開源於 GitHub
-        <br />
-        本測驗屬於「語氣宇宙 × 模組駕駛學」的一部分
-      </footer>
-    </main>
+          )}
+        </>
+      )}
+    </motion.div>
   );
 }
