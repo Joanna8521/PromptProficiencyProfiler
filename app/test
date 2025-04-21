@@ -1,1 +1,72 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+const questions = [
+  {
+    id: 1,
+    text: '你平常怎麼用 ChatGPT？',
+    options: [
+      { label: '想到什麼就問什麼', score: 'L1' },
+      { label: '會先想清楚目標，再輸入明確問題', score: 'L2' },
+      { label: '我會設定角色或語言風格讓它更像我要的樣子', score: 'L3' },
+      { label: '我會要求它模擬不同語言風格、甚至定義語言模組', score: 'L4' },
+      { label: '除了 ChatGPT 之外，我沒有朋友', score: 'L1' }
+    ]
+  },
+  // 可持續擴充更多題目...
+];
+
+export default function TestPage() {
+  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const router = useRouter();
+
+  const handleSelect = (questionId: number, score: string) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: score }));
+  };
+
+  const handleSubmit = () => {
+    const tally: Record<string, number> = {};
+    Object.values(answers).forEach((score) => {
+      tally[score] = (tally[score] || 0) + 1;
+    });
+    const sorted = Object.entries(tally).sort((a, b) => b[1] - a[1]);
+    const resultLevel = sorted[0]?.[0] || 'L1';
+    router.push(`/result?level=${resultLevel}`);
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto py-10 px-4">
+      <h1 className="text-2xl font-bold mb-6 text-center">語言階層診斷問卷</h1>
+      {questions.map((q) => (
+        <div key={q.id} className="mb-8">
+          <p className="mb-4 font-medium">{q.text}</p>
+          <div className="space-y-2">
+            {q.options.map((opt, idx) => (
+              <label key={idx} className="block">
+                <input
+                  type="radio"
+                  name={`q-${q.id}`}
+                  value={opt.score}
+                  className="mr-2"
+                  checked={answers[q.id] === opt.score}
+                  onChange={() => handleSelect(q.id, opt.score)}
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <button
+        onClick={handleSubmit}
+        className="w-full mt-8 bg-black text-white py-3 rounded-md hover:bg-gray-800"
+      >
+        送出診斷結果 →
+      </button>
+    </div>
+  );
+}
 
