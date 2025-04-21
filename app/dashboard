@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
+import { motion } from 'framer-motion';
 
 const mockHistory = [
   { date: '2024-05-01', level: 'L1' },
@@ -43,6 +44,15 @@ const levelNumericMap: Record<string, number> = {
   L5: 5
 };
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.1 * i, duration: 0.6 }
+  })
+};
+
 export default function DashboardPage() {
   const [history, setHistory] = useState(mockHistory);
 
@@ -56,23 +66,37 @@ export default function DashboardPage() {
   }));
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold mb-6 text-center">你的語言成長儀表板</h1>
+    <motion.div
+      className="max-w-4xl mx-auto px-6 py-10"
+      initial="hidden"
+      animate="show"
+      variants={fadeUp}
+    >
+      <motion.h1 className="text-3xl font-bold mb-6 text-center" variants={fadeUp}>
+        你的語言成長儀表板
+      </motion.h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10"
+        variants={fadeUp}
+      >
         {history.map((entry, idx) => (
-          <div
+          <motion.div
             key={idx}
             className={`rounded-lg p-4 text-white ${levelColor[entry.level]}`}
+            custom={idx + 1}
+            variants={fadeUp}
           >
             <p className="text-sm mb-1">{entry.date}</p>
             <p className="text-lg font-semibold">{entry.level}｜{levelLabelMap[entry.level]}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      <h2 className="text-xl font-semibold text-center mb-4">📈 語言階層曲線圖</h2>
-      <div className="w-full h-72">
+      <motion.h2 className="text-xl font-semibold text-center mb-4" variants={fadeUp}>
+        📈 語言階層曲線圖
+      </motion.h2>
+      <motion.div className="w-full h-72" variants={fadeUp}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -82,11 +106,11 @@ export default function DashboardPage() {
             <Line type="monotone" dataKey="level" stroke="#6366f1" strokeWidth={2} dot={{ r: 4 }} />
           </LineChart>
         </ResponsiveContainer>
-      </div>
+      </motion.div>
 
-      <p className="text-center text-gray-500 text-sm mt-6">
+      <motion.p className="text-center text-gray-500 text-sm mt-6" variants={fadeUp}>
         📊 此圖顯示你近期的語言階層變化，越高代表越接近模組設計者。
-      </p>
-    </div>
+      </motion.p>
+    </motion.div>
   );
 }
