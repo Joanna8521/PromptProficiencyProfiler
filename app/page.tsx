@@ -10,6 +10,7 @@ const links = [
   { href: '/library', label: '📚 語氣模組推薦庫' },
   { href: '/builder', label: '🧠 建構你的語氣模組' },
   { href: '/sandbox', label: '🔬 模擬語氣測試區' },
+  { href: '/refiner', label: '🔄 Prompt 改寫工具' },
   { href: '/about', label: 'ℹ️ 關於本專案' }
 ];
 
